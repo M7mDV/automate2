@@ -40,9 +40,12 @@ jobs:
           sudo mv ~/go/bin/assetfinder /usr/bin/
 
           # findomain
-          wget https://github.com/Findomain/Findomain/releases/latest/download/findomain-linux
-          chmod +x findomain-linux
-          sudo mv findomain-linux /usr/bin/findomain
+          - name: Install findomain
+            run: |
+          wget -q https://github.com/Findomain/Findomain/releases/latest/download/findomain-linux.zip
+          unzip -o findomain-linux.zip
+          chmod +x findomain
+          sudo mv findomain /usr/bin/
 
           # chaos
           go install github.com/projectdiscovery/chaos-client/cmd/chaos@latest
