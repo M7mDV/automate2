@@ -1,0 +1,46 @@
+name: Subdomain Monitor
+
+on:
+  schedule:
+    # Run every 6 hours — change to your liking:
+    # every hour:   '0 * * * *'
+    # every 6h:     '0 */6 * * *'
+    # every 12h:    '0 */12 * * *'
+    # every day:    '0 8 * * *'
+    - cron: '0 */6 * * *'
+
+  # Allow manual trigger from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # needed to commit updated results
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run subdomain monitor
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: python monitor.py
+
+      - name: Commit updated results
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add results/
+          git diff --cached --quiet || git commit -m "chore: update subdomain results [$(date -u '+%Y-%m-%d %H:%M UTC')]"
+          git push
