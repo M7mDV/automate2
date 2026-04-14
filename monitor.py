@@ -1,276 +1,125 @@
 #!/usr/bin/env python3
-"""
-Subdomain Monitor - GitHub Actions Edition
-Monitors new subdomains using crt.sh and notifies via Discord webhook.
-Stores known subdomains in a text file committed to the repo.
-"""
 
 import os
-import sys
-import json
 import time
 import requests
-import argparse
+import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 
-# ─────────────────────────────────────────
-# Config
-# ─────────────────────────────────────────
-DISCORD_WEBHOOK = os.environ.get("DISCORD_WEBHOOK", "")
-TARGETS_FILE    = "targets.txt"
-RESULTS_DIR     = "results"
+DISCORD_WEBHOOK = os.getenv("DISCORD_WEBHOOK", "")
 
-CRTSH_URL     = "https://crt.sh/?q={domain}&output=json"
-HACKERTARGET  = "https://api.hackertarget.com/hostsearch/?q={domain}"
-ALIENVAULT    = "https://otx.alienvault.com/api/v1/indicators/domain/{domain}/passive_dns"
-ANUBIS        = "https://jldc.me/anubis/subdomains/{domain}"
+TARGETS_FILE = "targets.txt"
+RESULTS_DIR = "results"
 
-HEADERS = {
-    "User-Agent": "Mozilla/5.0 (subdomain-monitor; github-actions)"
-}
+# ─────────────── Sources (APIs) ───────────────
 
-# ─────────────────────────────────────────
-# Sources
-# ─────────────────────────────────────────
-
-def fetch_crtsh(domain: str) -> set:
-    subdomains = set()
+def fetch_crtsh(domain):
     try:
-        r = requests.get(CRTSH_URL.format(domain=domain), headers=HEADERS, timeout=30)
-        if r.status_code == 200:
-            for entry in r.json():
-                name = entry.get("name_value", "")
-                for sub in name.split("\n"):
-                    sub = sub.strip().lower().lstrip("*.")
-                    if sub.endswith(f".{domain}") or sub == domain:
-                        subdomains.add(sub)
-    except Exception as e:
-        print(f"  [crt.sh] error: {e}")
-    return subdomains
+        r = requests.get(f"https://crt.sh/?q={domain}&output=json", timeout=30)
+        if r.status_code != 200:
+            return set()
+
+        subs = set()
+        for i in r.json():
+            for s in i.get("name_value", "").split("\n"):
+                s = s.strip().lower().lstrip("*.")
+                if s.endswith(domain):
+                    subs.add(s)
+        return subs
+    except:
+        return set()
 
 
-def fetch_hackertarget(domain: str) -> set:
-    subdomains = set()
+def fetch_hackertarget(domain):
     try:
-        r = requests.get(HACKERTARGET.format(domain=domain), headers=HEADERS, timeout=20)
-        if r.status_code == 200 and "error" not in r.text.lower():
-            for line in r.text.strip().split("\n"):
-                sub = line.split(",")[0].strip().lower()
-                if sub.endswith(f".{domain}") or sub == domain:
-                    subdomains.add(sub)
-    except Exception as e:
-        print(f"  [hackertarget] error: {e}")
-    return subdomains
+        r = requests.get(f"https://api.hackertarget.com/hostsearch/?q={domain}", timeout=20)
+        if r.status_code != 200:
+            return set()
+
+        return {line.split(",")[0].strip() for line in r.text.splitlines() if domain in line}
+    except:
+        return set()
 
 
-def fetch_alienvault(domain: str) -> set:
-    subdomains = set()
+# ─────────────── Tools (CLI) ───────────────
+
+def run_tools(domain):
+    subs = set()
+
     try:
-        r = requests.get(ALIENVAULT.format(domain=domain), headers=HEADERS, timeout=20)
-        if r.status_code == 200:
-            data = r.json()
-            for entry in data.get("passive_dns", []):
-                hostname = entry.get("hostname", "").lower()
-                if hostname.endswith(f".{domain}") or hostname == domain:
-                    subdomains.add(hostname)
+        subprocess.run(f"subfinder -d {domain} -silent -o sub1.txt", shell=True)
+        subprocess.run(f"assetfinder --subs-only {domain} > sub2.txt", shell=True)
+        subprocess.run(f"findomain -t {domain} -u sub3.txt", shell=True)
+        subprocess.run(f"chaos -d {domain} -o sub4.txt", shell=True)
+        subprocess.run(f"python3 dnscan/dnscan.py -d {domain} -w dnscan/subdomains-1000.txt -t 100 > sub5.txt", shell=True)
+
+        for f in ["sub1.txt", "sub2.txt", "sub3.txt", "sub4.txt", "sub5.txt"]:
+            if Path(f).exists():
+                for line in open(f):
+                    s = line.strip().lower()
+                    if domain in s:
+                        subs.add(s)
+
     except Exception as e:
-        print(f"  [alienvault] error: {e}")
-    return subdomains
+        print("tools error:", e)
+
+    return subs
 
 
-def fetch_anubis(domain: str) -> set:
-    subdomains = set()
-    try:
-        r = requests.get(ANUBIS.format(domain=domain), headers=HEADERS, timeout=20)
-        if r.status_code == 200:
-            for sub in r.json():
-                sub = sub.strip().lower()
-                if sub.endswith(f".{domain}") or sub == domain:
-                    subdomains.add(sub)
-    except Exception as e:
-        print(f"  [anubis] error: {e}")
-    return subdomains
+# ─────────────── Storage ───────────────
 
-
-def enumerate_subdomains(domain: str) -> set:
-    print(f"\n[*] Enumerating subdomains for: {domain}")
-    all_subs = set()
-
-    sources = [
-        ("crt.sh",       fetch_crtsh),
-        ("hackertarget", fetch_hackertarget),
-        ("alienvault",   fetch_alienvault),
-        ("anubis",       fetch_anubis),
-    ]
-
-    for name, fn in sources:
-        try:
-            found = fn(domain)
-            print(f"  [{name}] found {len(found)} subdomains")
-            all_subs |= found
-        except Exception as e:
-            print(f"  [{name}] failed: {e}")
-        time.sleep(1)  # be nice to APIs
-
-    print(f"  [total] {len(all_subs)} unique subdomains")
-    return all_subs
-
-
-# ─────────────────────────────────────────
-# Storage (flat file in repo)
-# ─────────────────────────────────────────
-
-def get_results_file(domain: str) -> Path:
-    Path(RESULTS_DIR).mkdir(exist_ok=True)
-    safe = domain.replace(".", "_")
-    return Path(RESULTS_DIR) / f"{safe}.txt"
-
-
-def load_known(domain: str) -> set:
-    f = get_results_file(domain)
+def load_old(domain):
+    f = Path(RESULTS_DIR) / f"{domain.replace('.', '_')}.txt"
     if not f.exists():
         return set()
-    return set(line.strip() for line in f.read_text().splitlines() if line.strip())
+    return set(f.read_text().splitlines())
 
 
-def save_known(domain: str, subdomains: set):
-    f = get_results_file(domain)
-    f.write_text("\n".join(sorted(subdomains)) + "\n")
+def save(domain, subs):
+    Path(RESULTS_DIR).mkdir(exist_ok=True)
+    f = Path(RESULTS_DIR) / f"{domain.replace('.', '_')}.txt"
+    f.write_text("\n".join(sorted(subs)))
 
 
-# ─────────────────────────────────────────
-# Discord
-# ─────────────────────────────────────────
+# ─────────────── Discord ───────────────
 
-def send_discord(domain: str, new_subs: list):
-    if not DISCORD_WEBHOOK:
-        print("[!] DISCORD_WEBHOOK not set — skipping notification")
+def send_discord(domain, new):
+    if not DISCORD_WEBHOOK or not new:
         return
 
-    now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    msg = "\n".join(f"• {x}" for x in list(new)[:20])
 
-    # Split into chunks of 20 to avoid Discord message limits
-    chunk_size = 20
-    chunks = [new_subs[i:i+chunk_size] for i in range(0, len(new_subs), chunk_size)]
-
-    for idx, chunk in enumerate(chunks):
-        sub_list = "\n".join(f"• `{s}`" for s in chunk)
-        part_label = f" (part {idx+1}/{len(chunks)})" if len(chunks) > 1 else ""
-
-        payload = {
-            "username": "SubMonitor 🔍",
-            "avatar_url": "https://cdn-icons-png.flaticon.com/512/2335/2335353.png",
-            "embeds": [
-                {
-                    "title": f"🆕 New Subdomains Found — {domain}{part_label}",
-                    "description": sub_list,
-                    "color": 0x00C2FF,
-                    "footer": {
-                        "text": f"SubMonitor • {now}"
-                    },
-                    "fields": [
-                        {
-                            "name": "Domain",
-                            "value": f"`{domain}`",
-                            "inline": True
-                        },
-                        {
-                            "name": "New Found",
-                            "value": str(len(new_subs)),
-                            "inline": True
-                        }
-                    ]
-                }
-            ]
-        }
-
-        try:
-            r = requests.post(DISCORD_WEBHOOK, json=payload, timeout=10)
-            if r.status_code in (200, 204):
-                print(f"  [discord] notification sent ✓")
-            else:
-                print(f"  [discord] failed: {r.status_code} {r.text}")
-        except Exception as e:
-            print(f"  [discord] error: {e}")
-
-        time.sleep(1)
+    requests.post(DISCORD_WEBHOOK, json={
+        "content": f"🔥 New Subdomains for {domain}:\n{msg}"
+    })
 
 
-def send_discord_summary(total_new: int, domains_checked: list):
-    """Send a summary message when no new subdomains are found."""
-    if not DISCORD_WEBHOOK:
-        return
+# ─────────────── Main ───────────────
 
-    now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+def run(domain):
+    old = load_old(domain)
 
-    if total_new == 0:
-        payload = {
-            "username": "SubMonitor 🔍",
-            "embeds": [
-                {
-                    "title": "✅ Scan Complete — No New Subdomains",
-                    "description": "All monitored domains checked. Nothing new found.",
-                    "color": 0x2ECC71,
-                    "footer": {"text": f"SubMonitor • {now}"},
-                    "fields": [
-                        {"name": "Domains Checked", "value": str(len(domains_checked)), "inline": True},
-                        {"name": "New Subdomains", "value": "0", "inline": True}
-                    ]
-                }
-            ]
-        }
-        try:
-            requests.post(DISCORD_WEBHOOK, json=payload, timeout=10)
-        except Exception:
-            pass
+    api_subs = fetch_crtsh(domain) | fetch_hackertarget(domain)
+    tool_subs = run_tools(domain)
 
+    all_subs = api_subs | tool_subs
+    new = all_subs - old
 
-# ─────────────────────────────────────────
-# Main
-# ─────────────────────────────────────────
+    if new:
+        print("[+] New:", len(new))
+        send_discord(domain, new)
+    else:
+        print("[-] No new subdomains")
 
-def run():
-    # Load targets
-    targets_path = Path(TARGETS_FILE)
-    if not targets_path.exists():
-        print(f"[!] {TARGETS_FILE} not found!")
-        sys.exit(1)
-
-    domains = [
-        line.strip().lower()
-        for line in targets_path.read_text().splitlines()
-        if line.strip() and not line.startswith("#")
-    ]
-
-    if not domains:
-        print("[!] No domains found in targets.txt")
-        sys.exit(1)
-
-    print(f"[*] Monitoring {len(domains)} domain(s): {', '.join(domains)}")
-
-    total_new = 0
-
-    for domain in domains:
-        known    = load_known(domain)
-        current  = enumerate_subdomains(domain)
-        new_subs = sorted(current - known)
-
-        if new_subs:
-            print(f"\n[+] {len(new_subs)} NEW subdomains for {domain}:")
-            for s in new_subs:
-                print(f"    {s}")
-            send_discord(domain, new_subs)
-            total_new += len(new_subs)
-        else:
-            print(f"\n[-] No new subdomains for {domain}")
-
-        # Always save updated list
-        save_known(domain, current)
-
-    print(f"\n[*] Done. Total new subdomains found: {total_new}")
-    send_discord_summary(total_new, domains)
+    save(domain, all_subs)
 
 
 if __name__ == "__main__":
-    run()
+    domain = os.getenv("DOMAIN", "")
+
+    if not domain:
+        print("No DOMAIN set")
+        exit(1)
+
+    run(domain)
