@@ -56,6 +56,7 @@ jobs:
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
           PDCP_API_KEY: ${{ secrets.PDCP_API_KEY }}
+          DOMAIN: ${{ secrets.DOMAIN }}
         run: python monitor.py
 
       - name: Commit updated results
