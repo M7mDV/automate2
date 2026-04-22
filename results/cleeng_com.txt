@@ -1,4 +1,9 @@
 *.api.sandbox.cleeng.com
+*.developers.apidoc.cleeng.com
+*.mediastore-sandbox.cleeng.com
+*.mediastoresdk-demo.cleeng.com
+*.mediastoresdk-staging.cleeng.com
+*.mediastoresdk.cleeng.com
 *.sandbox.cleeng.com
 01c1a4c1156ee5cc0f3a0218ff3166eb.cleeng.com
 047e363ff147168fa04ade57573395a0.cleeng.com
