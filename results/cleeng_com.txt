@@ -1,3 +1,8 @@
+*.developers.apidoc.cleeng.com
+*.mediastore-sandbox.cleeng.com
+*.mediastoresdk-demo.cleeng.com
+*.mediastoresdk-staging.cleeng.com
+*.mediastoresdk.cleeng.com
 01c1a4c1156ee5cc0f3a0218ff3166eb.cleeng.com
 047e363ff147168fa04ade57573395a0.cleeng.com
 05454eb55727.cleeng.com
@@ -4543,6 +4548,7 @@ www.mcp.api.sandbox.cleeng.com
 www.sandbox.cleeng.com
 www.ssl.cleeng.com
 www.support.cleeng.com
+www.translations3.cleeng.com
 www24framesdigitalcom.cleeng.com
 wwwarenatvsk.cleeng.com
 wwwartstreamingtvcom.cleeng.com
