@@ -1,3 +1,8 @@
+*.developers.apidoc.cleeng.com
+*.mediastore-sandbox.cleeng.com
+*.mediastoresdk-demo.cleeng.com
+*.mediastoresdk-staging.cleeng.com
+*.mediastoresdk.cleeng.com
 01c1a4c1156ee5cc0f3a0218ff3166eb.cleeng.com
 047e363ff147168fa04ade57573395a0.cleeng.com
 05454eb55727.cleeng.com
@@ -1303,7 +1308,6 @@ exo.cleeng.com
 experiencelab.cleeng.com
 explorationsearlylearning.cleeng.com
 expo.cleeng.com
-external.cleeng.com
 extremeentertainment.cleeng.com
 extremesports.cleeng.com
 eyesound.cleeng.com
@@ -1514,7 +1518,6 @@ gatesofthegarden.cleeng.com
 gatewayonmountzion.cleeng.com
 gauta.cleeng.com
 gbe.cleeng.com
-gcp.cleeng.com
 gcpublisher.cleeng.com
 gcuk.cleeng.com
 geannamacias1gmailcom.cleeng.com
@@ -1888,7 +1891,6 @@ inspiringinfotech.cleeng.com
 institutional-real-estate-inc.cleeng.com
 institutonovasemente.cleeng.com
 instyllationllc.cleeng.com
-int.cleeng.com
 integraciondigital.cleeng.com
 intelistream.cleeng.com
 intelligentsiacup.cleeng.com
@@ -2420,7 +2422,6 @@ mail.20191205-111401.pr.dev.internal.cleeng.com
 mail.20191205-122319.pr.dev.internal.cleeng.com
 mail.20191205-122739.pr.dev.internal.cleeng.com
 mail.20191205-123612.pr.dev.internal.cleeng.com
-mail.cleeng.com
 mailing.cleeng.com
 mainevent.cleeng.com
 mainnnevent.cleeng.com
@@ -3191,7 +3192,6 @@ prizeboxingpromotions.cleeng.com
 pro.cleeng.com
 probellum.cleeng.com
 proconsridos.cleeng.com
-prod.cleeng.com
 produccionescarpio.cleeng.com
 product.cleeng.com
 productvision.cleeng.com
@@ -4525,7 +4525,6 @@ wsd.cleeng.com
 wsof.cleeng.com
 wswondemand.cleeng.com
 wtk.cleeng.com
-ww2.cleeng.com
 wwfc.cleeng.com
 wwtv.cleeng.com
 www-cleeng-com.cleeng.com
