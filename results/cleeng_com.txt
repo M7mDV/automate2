@@ -22,6 +22,7 @@
 24fd.cleeng.com
 267f1a61689b.cleeng.com
 2a052e817d.cleeng.com
+2a57j77n2u4eehora0uuphc3sgnsdwg.config.api.sandbox.cleeng.com
 2a57j786296y1oht2zvk6zy5fxspsk4.mcp.api.sandbox.cleeng.com
 2a57j78ggsnxt39dhmyu8xfs5wkeyjt.config.api.prod.cleeng.com
 2a57j78m0ovu198y3g4k3utradbkn0w.mcp.api.prod.cleeng.com
@@ -2947,6 +2948,7 @@ ppvle.cleeng.com
 ppvlink.cleeng.com
 ppvnetwork.cleeng.com
 ppvvideo.cleeng.com
+pr.dev.internal.cleeng.com
 praiseondemand.cleeng.com
 prematrimoniales.cleeng.com
 premierestream.cleeng.com
@@ -4218,6 +4220,7 @@ www-paradigmdigital-tv.cleeng.com
 www.atretetnionguru.cleeng.com
 www.cleeng.com
 www.config.api.prod.cleeng.com
+www.config.api.sandbox.cleeng.com
 www.frankshockeyteam.cleeng.com
 www.glennonechip.cleeng.com
 www.kyqueens.cleeng.com
@@ -4225,6 +4228,8 @@ www.mcp.api.prod.cleeng.com
 www.mcp.api.sandbox.cleeng.com
 www.sandbox.cleeng.com
 www.ssl.cleeng.com
+www.support.cleeng.com
+www.translations3.cleeng.com
 www24framesdigitalcom.cleeng.com
 wwwarenatvsk.cleeng.com
 wwwartstreamingtvcom.cleeng.com
