@@ -2517,6 +2517,7 @@ mediastore.cleeng.com
 mediastoreapi-sandbox.cleeng.com
 mediastoreapi.cleeng.com
 mediastoresdk-demo.cleeng.com
+mediastoresdk-hosted-staging.cleeng.com
 mediastoresdk-hosted.cleeng.com
 mediastoresdk-staging.cleeng.com
 mediastoresdk.cleeng.com
