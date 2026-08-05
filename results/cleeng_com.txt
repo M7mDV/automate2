@@ -1,8 +1,3 @@
-*.developers.apidoc.cleeng.com
-*.mediastore-sandbox.cleeng.com
-*.mediastoresdk-demo.cleeng.com
-*.mediastoresdk-staging.cleeng.com
-*.mediastoresdk.cleeng.com
 01c1a4c1156ee5cc0f3a0218ff3166eb.cleeng.com
 047e363ff147168fa04ade57573395a0.cleeng.com
 05454eb55727.cleeng.com
@@ -334,10 +329,8 @@ autentia.cleeng.com
 auth-sandbox.cleeng.com
 auth.20191204-151944.pr.dev.internal.cleeng.com
 auth.20191204-164443.pr.dev.internal.cleeng.com
-auth.20191205-111401.pr.dev.internal.cleeng.com
 auth.20191205-122319.pr.dev.internal.cleeng.com
 auth.20191205-122739.pr.dev.internal.cleeng.com
-auth.20191205-123612.pr.dev.internal.cleeng.com
 auth.api.prod.cleeng.com
 auth.api.sandbox.cleeng.com
 auth.cleeng.com
@@ -2424,7 +2417,6 @@ mail.20191204-124534.pr.dev.internal.cleeng.com
 mail.20191204-150845.pr.dev.internal.cleeng.com
 mail.20191204-151944.pr.dev.internal.cleeng.com
 mail.20191204-164443.pr.dev.internal.cleeng.com
-mail.20191205-111401.pr.dev.internal.cleeng.com
 mail.20191205-122319.pr.dev.internal.cleeng.com
 mail.20191205-122739.pr.dev.internal.cleeng.com
 mail.20191205-123612.pr.dev.internal.cleeng.com
@@ -2522,7 +2514,6 @@ mediastore.cleeng.com
 mediastoreapi-sandbox.cleeng.com
 mediastoreapi.cleeng.com
 mediastoresdk-demo.cleeng.com
-mediastoresdk-hosted-staging.cleeng.com
 mediastoresdk-hosted.cleeng.com
 mediastoresdk-staging.cleeng.com
 mediastoresdk.cleeng.com
@@ -4551,7 +4542,6 @@ www.mcp.api.sandbox.cleeng.com
 www.sandbox.cleeng.com
 www.ssl.cleeng.com
 www.support.cleeng.com
-www.translations3.cleeng.com
 www24framesdigitalcom.cleeng.com
 wwwarenatvsk.cleeng.com
 wwwartstreamingtvcom.cleeng.com
