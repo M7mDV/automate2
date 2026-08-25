@@ -2415,6 +2415,8 @@ mail.20191205-122319.pr.dev.internal.cleeng.com
 mail.20191205-122739.pr.dev.internal.cleeng.com
 mail.20191205-123612.pr.dev.internal.cleeng.com
 mail.cleeng.com
+mail.developers.apidoc.cleeng.com
+mail.mediastoresdk.cleeng.com
 mailing.cleeng.com
 mainevent.cleeng.com
 mainnnevent.cleeng.com
@@ -4519,11 +4521,13 @@ www-paradigmdigital-tv.cleeng.com
 www.cleeng.com
 www.config.api.prod.cleeng.com
 www.config.api.sandbox.cleeng.com
+www.developers.apidoc.cleeng.com
 www.frankshockeyteam.cleeng.com
 www.glennonechip.cleeng.com
 www.kyqueens.cleeng.com
 www.mcp.api.prod.cleeng.com
 www.mcp.api.sandbox.cleeng.com
+www.mediastoresdk.cleeng.com
 www.sandbox.cleeng.com
 www.ssl.cleeng.com
 www.support.cleeng.com
