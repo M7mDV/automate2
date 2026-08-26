@@ -328,10 +328,8 @@ autentia.cleeng.com
 auth-sandbox.cleeng.com
 auth.20191204-151944.pr.dev.internal.cleeng.com
 auth.20191204-164443.pr.dev.internal.cleeng.com
-auth.20191205-111401.pr.dev.internal.cleeng.com
 auth.20191205-122319.pr.dev.internal.cleeng.com
 auth.20191205-122739.pr.dev.internal.cleeng.com
-auth.20191205-123612.pr.dev.internal.cleeng.com
 auth.api.prod.cleeng.com
 auth.api.sandbox.cleeng.com
 auth.cleeng.com
@@ -849,7 +847,6 @@ conferences340bcoalition.cleeng.com
 conferencesystems.cleeng.com
 confidential.cleeng.com
 config-new.api.prod.cleeng.com
-config-new.api.sandbox.cleeng.com
 config.api.prod.cleeng.com
 config.api.sandbox.cleeng.com
 congregationbethisrael.cleeng.com
@@ -2410,11 +2407,12 @@ mail.20191204-124534.pr.dev.internal.cleeng.com
 mail.20191204-150845.pr.dev.internal.cleeng.com
 mail.20191204-151944.pr.dev.internal.cleeng.com
 mail.20191204-164443.pr.dev.internal.cleeng.com
-mail.20191205-111401.pr.dev.internal.cleeng.com
 mail.20191205-122319.pr.dev.internal.cleeng.com
 mail.20191205-122739.pr.dev.internal.cleeng.com
 mail.20191205-123612.pr.dev.internal.cleeng.com
 mail.cleeng.com
+mail.developers.apidoc.cleeng.com
+mail.mediastoresdk.cleeng.com
 mailing.cleeng.com
 mainevent.cleeng.com
 mainnnevent.cleeng.com
@@ -2508,7 +2506,6 @@ mediastore.cleeng.com
 mediastoreapi-sandbox.cleeng.com
 mediastoreapi.cleeng.com
 mediastoresdk-demo.cleeng.com
-mediastoresdk-hosted-staging.cleeng.com
 mediastoresdk-hosted.cleeng.com
 mediastoresdk-staging.cleeng.com
 mediastoresdk.cleeng.com
@@ -4519,11 +4516,13 @@ www-paradigmdigital-tv.cleeng.com
 www.cleeng.com
 www.config.api.prod.cleeng.com
 www.config.api.sandbox.cleeng.com
+www.developers.apidoc.cleeng.com
 www.frankshockeyteam.cleeng.com
 www.glennonechip.cleeng.com
 www.kyqueens.cleeng.com
 www.mcp.api.prod.cleeng.com
 www.mcp.api.sandbox.cleeng.com
+www.mediastoresdk.cleeng.com
 www.sandbox.cleeng.com
 www.ssl.cleeng.com
 www.support.cleeng.com
